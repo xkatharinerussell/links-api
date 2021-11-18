@@ -1,0 +1,297 @@
+openapi: 3.0.0
+info:
+  description: |
+    This is the Links API for Linktree
+  version: "v1"
+  title: Links API
+  contact:
+    email: katharinezrussell@gmail.com
+host: /
+tags:
+  - name: Links
+paths:
+  /links/classic:
+    post:
+      tags:
+        - Links
+      summary: Create a new classic link
+      parameters:
+        - in: path
+          name: companyId
+          required: true
+          schema:
+            type: string
+          description: Identifier for company
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pet'
+      
+      responses:
+        '200':
+          description: Company Returned
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Company"
+        '404':
+          description: Company Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+                
+  /companies/{companyId}:
+    get:
+      tags:
+        - Companies
+      summary: Get a Company
+      description: 'Get a Company by Id'
+      parameters:
+        - in: path
+          name: companyId
+          required: true
+          schema:
+            type: string
+          description: Identifier for company
+      responses:
+        '200':
+          description: Company Returned
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Company"
+        '404':
+          description: Company Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /companies:
+    get:
+      tags:
+        - Companies
+      summary: Get a list of Companies
+      description: 'Get a List of Companies'
+      parameters:
+        - in: query
+          name: sharePrices
+          required: false
+          schema:
+            type: boolean
+          description: Return company share prices in response
+        - in: query
+          name: minScore
+          required: false
+          schema:
+            type: integer
+          description: Return only companies with at least min score
+        - in: query
+          name: maxScore
+          required: false
+          schema:
+            type: integer
+          description: Return only companies with no greater than max score
+        - in: query
+          name: exchange
+          required: false
+          schema:
+            type: string
+          description: Return only companies listed on specific exchange
+        - in: query
+          name: orderBy
+          required: false
+          schema:
+            type: string
+          description: Return results sorted in particular order
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: string
+          description: Limit number of results
+        - in: query
+          name: offset
+          required: false
+          schema:
+            type: string
+          description: Offset results?
+        
+      responses:
+        '200':
+          description: Companies Returned
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Companies"
+                  next:
+                    type: string
+                  prev:
+                    type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+components:
+  schemas:
+    # Objects
+    ClassicLink:
+      type: object
+      required:
+        - title
+        - url
+      properties:
+        title:
+          type: string
+        url:
+          type: string
+        
+    Shows:
+      type: array
+      items:
+        type: object
+        required:
+          - date
+          - venue
+          - status
+          - url
+        properties:
+          date:
+            type: string
+            description: Date of the show
+          venue:
+            type: string
+            description: Venue of the show
+          status:
+            type: string
+            description: Status of the show. e.g. sold out
+          url:
+            type: string
+            description: Url link to show details
+    
+    MusicPlayer:
+      type: array
+      items:
+        type: object
+        required:
+          - url
+          
+          
+    Companies:
+      type: array
+      items:
+        $ref: "#/components/schemas/Company"
+        
+    Company:
+      type: object
+      required:
+        - id
+        - companyName
+        - uniqueSymbol
+        - lastSharePrice
+        - volatility
+        - snowflake
+      properties:
+        id:
+          type: string
+          description: Company Id
+          example: c4c7108b-40c6-4a90-bd74-3e51bc24e887
+        companyName:
+          type: string
+          description: Name of the Company
+          example: Tesla
+        uniqueSymbol:
+          type: string
+          description: Representation of exchange and ticker symbols
+          example: NASDAQGS:TSLA
+        lastSharePrice:
+          type: integer
+        volatility:
+          type: number
+          description: Volatility in price within the last 90 days
+        snowflake:
+          $ref: "#/components/schemas/Snowflake"
+        sharePrices:
+          $ref: "#/components/schemas/SharePrices"
+          
+    Snowflake:
+      type: object
+      required:
+        - dividend
+        - future
+        - health
+        - management
+        - past
+        - value
+        - total
+      properties:
+        dividend:
+          type: integer
+        future:
+          type: integer
+        health:
+          type: integer
+        management:
+          type: integer
+        past:
+          type: integer
+        value:
+          type: integer
+        total:
+          type: integer
+          
+    SharePrices:
+     type: array
+     items:
+        type: object
+        properties:
+          date:
+            type: string
+            format: YYYY-MM-DD
+            example: '2020-03-27'
+          closePrice:
+            type: number
+            
+    # Error Response
+    ErrorResponse:
+      type: object
+      required:
+        - status
+        - code
+        - detail
+      properties:
+        status:
+          type: string
+        code:
+          $ref: "#/components/schemas/EnumErrorCodes"
+        detail:
+          type: string
+          
+    # Enums
+    EnumErrorCodes:
+      type: string
+      enum:
+        - NOT_FOUND
+        - INTERNAL_SERVER_ERROR
