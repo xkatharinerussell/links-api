@@ -6,38 +6,52 @@ info:
   title: Links API
   contact:
     email: katharinezrussell@gmail.com
-host: /
 tags:
   - name: Links
 paths:
-  /links/classic:
+  /user/{userId}/link:
     post:
       tags:
         - Links
-      summary: Create a new classic link
+      summary: Create a new link for user
       parameters:
         - in: path
-          name: companyId
+          name: userId
           required: true
           schema:
             type: string
-          description: Identifier for company
+          description: Identifier for user
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Pet'
-      
+              type: object
+              required:
+                - links
+              properties:
+                links:
+                  oneOf:
+                    - $ref: '#/components/schemas/Request_ClassicLink_Create'
+                    - $ref: '#/components/schemas/Request_ShowsList_Create'
+                    - $ref: '#/components/schemas/Request_MusicPlayer_Create'
       responses:
-        '200':
-          description: Company Returned
+        '201':
+          description: Link created
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Company"
-        '404':
-          description: Company Not Found
+                type: object
+                required:
+                  - links
+                properties:
+                  links:
+                    oneOf:
+                        - $ref: '#/components/schemas/Response_ClassicLink'
+                        - $ref: '#/components/schemas/Response_ShowsList'
+                        - $ref: '#/components/schemas/Response_MusicPlayer'
+        '400':
+          description: Invalid Request
           content:
             application/json:
               schema:
@@ -49,104 +63,42 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
                 
-  /companies/{companyId}:
+  /user/{userId}/links:
     get:
       tags:
-        - Companies
-      summary: Get a Company
-      description: 'Get a Company by Id'
+        - Links
+      summary: Get all links for a user
       parameters:
         - in: path
-          name: companyId
+          name: userId
           required: true
           schema:
             type: string
-          description: Identifier for company
-      responses:
-        '200':
-          description: Company Returned
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Company"
-        '404':
-          description: Company Not Found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-  /companies:
-    get:
-      tags:
-        - Companies
-      summary: Get a list of Companies
-      description: 'Get a List of Companies'
-      parameters:
+          description: Identifier for user
         - in: query
-          name: sharePrices
-          required: false
-          schema:
-            type: boolean
-          description: Return company share prices in response
-        - in: query
-          name: minScore
-          required: false
-          schema:
-            type: integer
-          description: Return only companies with at least min score
-        - in: query
-          name: maxScore
-          required: false
-          schema:
-            type: integer
-          description: Return only companies with no greater than max score
-        - in: query
-          name: exchange
+          name: sortBy
           required: false
           schema:
             type: string
-          description: Return only companies listed on specific exchange
+          description: Sort response by particular attribute. e.g. date
         - in: query
           name: orderBy
           required: false
           schema:
             type: string
-          description: Return results sorted in particular order
-        - in: query
-          name: limit
-          required: false
-          schema:
-            type: string
-          description: Limit number of results
-        - in: query
-          name: offset
-          required: false
-          schema:
-            type: string
-          description: Offset results?
-        
+          description: Order sorted by responses. e.g. ASC, DESC
       responses:
         '200':
-          description: Companies Returned
+          description: Links Returned
           content:
             application/json:
               schema:
                 type: object
                 required:
-                  - data
+                  - links
                 properties:
-                  data:
-                    $ref: "#/components/schemas/Companies"
-                  next:
-                    type: string
-                  prev:
-                    type: string
+                  links:
+                    $ref: "#/components/schemas/AllLinks"
         '500':
           description: Internal Server Error
           content:
@@ -156,7 +108,105 @@ paths:
 
 components:
   schemas:
-    # Objects
+    Request_ClassicLink_Create:
+      type: object
+      required:
+        - type
+        - attributes
+      properties:
+        type:
+          type: string
+          enum:
+            - classic
+        attributes:
+          $ref: "#/components/schemas/ClassicLink"
+    
+    Request_ShowsList_Create:
+      type: object
+      required:
+        - type
+        - attributes
+      properties:
+        type:
+          type: string
+          enum:
+            - shows
+        attributes:
+          $ref: "#/components/schemas/ShowList"
+          
+    Request_MusicPlayer_Create:
+      type: object
+      required:
+        - type
+        - attributes
+      properties:
+        type:
+          type: string
+          enum:
+            - music
+        attributes:
+          $ref: "#/components/schemas/MusicPlayer"
+          
+    Response_ClassicLink:
+      type: object
+      required:
+        - id
+        - type
+        - createdAt
+        - attributes
+      properties:
+        id:
+          type: string
+        type:
+          enum:
+            - classic
+        createdAt:
+          type: string
+          format: YYYY-MM-DD
+          example: '2020-03-27'
+        attributes:
+          $ref: "#/components/schemas/ClassicLink"
+    
+    Response_ShowsList:
+      type: object
+      required:
+        - id
+        - type
+        - createdAt
+        - attributes
+      properties:
+        id:
+          type: string
+        type:
+          enum:
+            - shows
+        createdAt:
+          type: string
+          format: YYYY-MM-DD
+          example: '2020-03-27'
+        attributes:
+          $ref: "#/components/schemas/ShowList"
+    
+    Response_MusicPlayer:
+      type: object
+      required:
+        - id
+        - type
+        - createdAt
+        - attributes
+      properties:
+        id:
+          type: string
+        type:
+          enum:
+            - music
+        createdAt:
+          type: string
+          format: YYYY-MM-DD
+          example: '2020-03-27'
+        attributes:
+          $ref: "#/components/schemas/MusicPlayer"
+
     ClassicLink:
       type: object
       required:
@@ -168,7 +218,7 @@ components:
         url:
           type: string
         
-    Shows:
+    ShowList:
       type: array
       items:
         type: object
@@ -192,87 +242,54 @@ components:
             description: Url link to show details
     
     MusicPlayer:
+      type: object
+      required: 
+        - featured
+        - musicLinks
+      properties:
+        featured:
+          $ref: '#/components/schemas/FeaturedMusic'
+        musicLinks:
+          $ref: '#/components/schemas/MusicLinks'
+          
+    FeaturedMusic:
+      type: object
+      required:
+        - albumImage
+        - songName
+        - artistName
+      properties:
+        albumImage:
+          type: string
+        songName:
+          type: string
+        artistName:
+          type: string
+            
+    MusicLinks:
       type: array
       items:
         type: object
         required:
+          - title
+          - icon
           - url
+        properties:
+          title:
+            type: string
+          icon:
+            type: string
+          url:
+            type: string
           
-          
-    Companies:
+    AllLinks:
       type: array
       items:
-        $ref: "#/components/schemas/Company"
-        
-    Company:
-      type: object
-      required:
-        - id
-        - companyName
-        - uniqueSymbol
-        - lastSharePrice
-        - volatility
-        - snowflake
-      properties:
-        id:
-          type: string
-          description: Company Id
-          example: c4c7108b-40c6-4a90-bd74-3e51bc24e887
-        companyName:
-          type: string
-          description: Name of the Company
-          example: Tesla
-        uniqueSymbol:
-          type: string
-          description: Representation of exchange and ticker symbols
-          example: NASDAQGS:TSLA
-        lastSharePrice:
-          type: integer
-        volatility:
-          type: number
-          description: Volatility in price within the last 90 days
-        snowflake:
-          $ref: "#/components/schemas/Snowflake"
-        sharePrices:
-          $ref: "#/components/schemas/SharePrices"
+        anyOf:
+          - $ref: "#/components/schemas/Response_ClassicLink"
+          - $ref: "#/components/schemas/Response_ShowsList"
+          - $ref: "#/components/schemas/Response_MusicPlayer"
           
-    Snowflake:
-      type: object
-      required:
-        - dividend
-        - future
-        - health
-        - management
-        - past
-        - value
-        - total
-      properties:
-        dividend:
-          type: integer
-        future:
-          type: integer
-        health:
-          type: integer
-        management:
-          type: integer
-        past:
-          type: integer
-        value:
-          type: integer
-        total:
-          type: integer
-          
-    SharePrices:
-     type: array
-     items:
-        type: object
-        properties:
-          date:
-            type: string
-            format: YYYY-MM-DD
-            example: '2020-03-27'
-          closePrice:
-            type: number
             
     # Error Response
     ErrorResponse:
@@ -293,5 +310,5 @@ components:
     EnumErrorCodes:
       type: string
       enum:
-        - NOT_FOUND
+        - INVALID_REQUEST
         - INTERNAL_SERVER_ERROR
