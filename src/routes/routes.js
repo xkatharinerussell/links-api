@@ -1,20 +1,24 @@
 // Import Libraries
 import express from "express";
-import { checkSchema } from 'express-validator';
+import { Validator } from "express-json-validator-middleware";
 
+// Local imports
 import { createLink, getLinks } from "../controllers/linksController.js";
-import { createClassicLinkSchema } from "../validators/createLinkValidator.js";
-import { validateRequest } from "../validators/validateRequest.js";
+import createLinkSchema from "../schemas/createLinkSchema.js";
+import getLinkSchema from "../schemas/getLinkSchema.js";
+
+// Create new validator
+const { validate } = new Validator();
 
 const getRoutes = () => {
     // Initialise express router
     const router = express.Router();
 
     // Route to create new link
-    router.post('/user/:userId/link', createClassicLinkSchema, validateRequest, createLink);
-    
+    router.post('/user/:userId/link', validate({ body: createLinkSchema }), createLink);
+
     // Route to get links for user
-    router.get('/user/:userId/links', getLinks);
+    router.get('/user/:userId/links', validate({ query: getLinkSchema }), getLinks);
 
     return router;
 }

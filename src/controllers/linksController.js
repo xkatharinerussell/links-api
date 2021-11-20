@@ -3,11 +3,13 @@ import { v4 as uuidv4 } from 'uuid';
 import { sortByDate } from './linksHelpers.js';
 
 // Store user and links in a map
+// Note: this is a temporary way to mock some responses
 const map = new Map();
 
 // Create Link
 export const createLink = (req, res) => {
     const { userId } = req.params;
+    // Create user if it doesn't exist
     if(!map.has(userId)) {
         map.set(userId, []);
     }
@@ -26,7 +28,7 @@ export const createLink = (req, res) => {
     // Store new link for user
     map.get(userId).push(result.links);
 
-    res.stjson(result);
+    res.status(201).json(result);
 }
 
 export const getLinks = (req, res) => {
@@ -47,6 +49,5 @@ export const getLinks = (req, res) => {
         result = { links: sortedUserLinks };
     }
 
-    //console.log(map);
-    res.json(result);
+    res.status(200).json(result);
 }

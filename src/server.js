@@ -1,10 +1,10 @@
 import express from "express";
 //import cors from "cors";
-import bodyParser from "body-parser";
 import logger from 'loglevel';
 
 // Local imports
 import { getRoutes } from "./routes/routes.js";
+import { validationErrorHandler } from "./middleware/errorHandler.js";
 
 const DEFAULT_PORT = 8081;
 // Get Port number
@@ -14,9 +14,11 @@ const startServer = () => {
     const app = express();
     // Use cors
     //app.use(cors());
-    app.use(bodyParser.json());
+    app.use(express.json());
+    
     // Mount routes on '/' path
     app.use('/', getRoutes());
+    app.use(validationErrorHandler);
 
     return new Promise(resolve => {
         const server = app.listen(port, () => {
