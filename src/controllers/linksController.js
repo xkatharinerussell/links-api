@@ -4,6 +4,7 @@ import { sortByDate } from './linksHelpers.js';
 
 // Store user and links in a map
 // Note: this is a temporary way to mock some responses
+// TODO: use a database to store data along with a service to reach out to the database
 const map = new Map();
 
 // Create Link
@@ -17,6 +18,7 @@ export const createLink = (req, res) => {
     const id = uuidv4();
     // Generate date for link
     const createdAt = new Date();
+    // TODO: Create a DTO object and refactor to enforce format for response
     const result = {
         links: {
             id: id,
@@ -44,6 +46,7 @@ export const getLinks = (req, res) => {
 
     let sortedUserLinks;
     // Current assumption is that we can only sort by date
+    // TODO: refactor this to be part of service level code
     if(sortBy !== undefined && orderBy !== undefined) {
         sortedUserLinks = sortByDate(userLinks, orderBy);
         result = { links: sortedUserLinks };

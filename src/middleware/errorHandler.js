@@ -8,7 +8,7 @@ export const validationErrorHandler = (error, req, res, next) => {
         status: 400,
         code: "INVALID_REQUEST",
         errors: error.validationErrors
-      });
+    });
       next();
     } else {
       // Pass error on if not a validation error

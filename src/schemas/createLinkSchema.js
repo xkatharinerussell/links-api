@@ -1,3 +1,7 @@
+/* TODO: Refactor to stop using "oneOf" from jsonSchema.
+This produces some confusing errors including each link type returned in the API.*/
+
+// Json validation schema for creating a link
 const createLinkSchema = {
     type: "object",
     required: ["links"],
