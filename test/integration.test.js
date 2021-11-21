@@ -35,6 +35,7 @@ describe('Create Link', () => {
         "links": {
           "type": "shows",
           "attributes": {
+              "title": "Shows",
               "showList": [
                 {
                     "date": "19 December 2021",
@@ -51,16 +52,13 @@ describe('Create Link', () => {
         "links": {
           "type": "music",
           "attributes": {
-              "featured": {
-                  "albumImage": "http://albumImage.com",
-                  "songName": "This cool song",
-                  "artistName": "Prince"
-              },
+              "title": "Music",
               "musicLinks": [
                 {
                     "title": "Spotify",
                     "icon": "spotify.png",
-                    "url": "lnktree.com"
+                    "url": "lnktree.com",
+                    "featured": true
                 }
             ]
             }

@@ -47,8 +47,12 @@ const createLinkSchema = {
                 },
                 attributes: {
                     type: "object",
-                    required: ["showList"],
+                    required: ["title", "showList"],
                     properties: {
+                        title: {
+                            type: "string",
+                            maxLength: 144,
+                        },
                         showList: {
                             type: "array",
                             items: {
@@ -84,30 +88,17 @@ const createLinkSchema = {
                 },
                 attributes: {
                     type: "object",
-                    required: ["featured", "musicLinks"],
+                    required: ["title", "musicLinks"],
                     properties: {
-                        featured: {
-                            type: "object",
-                            required: ["albumImage", "songName", "artistName"],
-                            properties: {
-                                albumImage: {
-                                    type: "string",
-                                    format: "uri",
-                                    pattern: "^(https?|wss?|ftp)://"
-                                },
-                                songName: {
-                                    type: "string"
-                                },
-                                artistName: {
-                                    type: "string"
-                                }
-                            }
+                        title: {
+                            type: "string",
+                            maxLength: 144,
                         },
                         musicLinks: {
                             type: "array",
                             items: {
                                 type: "object",
-                                required: ["title", "icon", "url"],
+                                required: ["title", "icon", "url", "featured"],
                                 properties: {
                                     title: {
                                         type: "string",
@@ -117,6 +108,9 @@ const createLinkSchema = {
                                     },
                                     url: {
                                         type: "string"
+                                    },
+                                    featured: {
+                                        type: "boolean"
                                     }
                                 }
                             }

@@ -48,6 +48,7 @@ describe('Validate Links Request', () => {
                 links: {
                     type: "shows",
                     attributes: {
+                        title: "Shows",
                         showList: [
                             {
                                 date: "19 December 2021",
@@ -76,6 +77,7 @@ describe('Validate Links Request', () => {
                 links: {
                     type: "shows",
                     attributes: {
+                        title: "Shows",
                         showList: [
                             {
                                 date: "19 December 2021",
@@ -131,6 +133,7 @@ describe('Validate Links Request', () => {
                 links: {
                     type: "music",
                     attributes: {
+                        title: "Music",
                         musicLinks: [
                         {
                             title: "Spotify",
@@ -140,7 +143,8 @@ describe('Validate Links Request', () => {
                         {
                             title: "Spotify",
                             icon: "spotify.png",
-                            url: "lnktree.com"
+                            url: "lnktree.com",
+                            featured: true
                         }
                         ]
                     }
@@ -153,7 +157,7 @@ describe('Validate Links Request', () => {
             // Assert
             expect(error).toBeTruthy();
             expect(error.name).toBe("JsonSchemaValidationError");
-            expect(error.validationErrors.body[2].dataPath).toBe(".links.attributes");
+            expect(error.validationErrors.body[2].dataPath).toBe(".links.attributes.musicLinks[0]");
             expect(error.validationErrors.body[2].message).toBe("should have required property 'featured'");
         });
     });

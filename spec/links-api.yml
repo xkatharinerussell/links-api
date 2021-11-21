@@ -132,7 +132,15 @@ components:
           enum:
             - shows
         attributes:
-          $ref: "#/components/schemas/ShowList"
+          type: object
+          properties:
+            title:
+              type: string
+              example: Shows
+            url:
+              type: string
+            showList:
+              $ref: "#/components/schemas/ShowList"
           
     Request_MusicPlayer_Create:
       type: object
@@ -145,7 +153,15 @@ components:
           enum:
             - music
         attributes:
-          $ref: "#/components/schemas/MusicPlayer"
+          type: object
+          properties:
+            title:
+              type: string
+              example: Music
+            url:
+              type: string
+            musicLinks:
+              $ref: "#/components/schemas/MusicPlayer"
           
     Response_ClassicLink:
       type: object
@@ -185,7 +201,15 @@ components:
           format: YYYY-MM-DD
           example: '2020-03-27'
         attributes:
-          $ref: "#/components/schemas/ShowList"
+          type: object
+          properties:
+            title:
+              type: string
+              example: Shows
+            url:
+              type: string
+            showList:
+              $ref: "#/components/schemas/ShowList"
     
     Response_MusicPlayer:
       type: object
@@ -205,7 +229,15 @@ components:
           format: YYYY-MM-DD
           example: '2020-03-27'
         attributes:
-          $ref: "#/components/schemas/MusicPlayer"
+          type: object
+          properties:
+              title:
+                type: string
+                example: Music
+              url:
+                type: string
+              musicLinks:
+                $ref: "#/components/schemas/MusicPlayer"
 
     ClassicLink:
       type: object
@@ -244,27 +276,10 @@ components:
     MusicPlayer:
       type: object
       required: 
-        - featured
         - musicLinks
       properties:
-        featured:
-          $ref: '#/components/schemas/FeaturedMusic'
         musicLinks:
           $ref: '#/components/schemas/MusicLinks'
-          
-    FeaturedMusic:
-      type: object
-      required:
-        - albumImage
-        - songName
-        - artistName
-      properties:
-        albumImage:
-          type: string
-        songName:
-          type: string
-        artistName:
-          type: string
             
     MusicLinks:
       type: array
@@ -274,6 +289,7 @@ components:
           - title
           - icon
           - url
+          - featured
         properties:
           title:
             type: string
@@ -281,6 +297,8 @@ components:
             type: string
           url:
             type: string
+          featured:
+            type: boolean
           
     AllLinks:
       type: array

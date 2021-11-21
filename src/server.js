@@ -1,23 +1,22 @@
 import express from "express";
-//import cors from "cors";
 import logger from 'loglevel';
 
 // Local imports
 import { getRoutes } from "./routes/routes.js";
 import { validationErrorHandler } from "./middleware/errorHandler.js";
 
-const DEFAULT_PORT = 8081;
 // Get Port number
-const port = process.env.PORT || DEFAULT_PORT;
+const port = 8081;
 
 const startServer = () => {
     const app = express();
-    // Use cors
-    //app.use(cors());
+
     app.use(express.json());
     
     // Mount routes on '/' path
     app.use('/', getRoutes());
+
+    // Use Validation Handler
     app.use(validationErrorHandler);
 
     return new Promise(resolve => {

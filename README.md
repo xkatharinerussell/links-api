@@ -1,11 +1,6 @@
 # links-api
 API to create and return different types of links
 
-
-<p align="center">
-  <img src="https://github.com/blstrco/linktr.ee-backend-assessment/raw/master/Screen%20Shot%202019-07-08%20at%202.09.47%20pm.png">
-</p>
-
 # The Problem
 We have three new link types for our users.
 
@@ -47,3 +42,40 @@ You are required to create a JSON API that our front end clients will interact w
 ---
 # Submission
 Set up your own remote git repository and make commits as you would in your day to day work. Submit a link to your repo when you're finished.
+
+# Running the Code locally
+The following depencendies must be installed on your local machine for the project to run:
+- [Node.js](https://nodejs.org/en/) v17.x
+
+1. Clone the repo:\
+``` git clone https://github.com/xkatharinerussell/links-api.git```
+3. Install npm dependencies:\
+```npm install```
+
+4. Start the application:\
+``` npm run start ```
+
+5. Hit the API endpoint at:\
+POST: http://localhost:8081/user/{userId}/link
+GET: http://localhost:8081/user/{userId}/links
+
+# Running unit tests
+Unit tests will run and automatically produce a coverage report.\
+
+1. Run command:\
+``` npm run test ```
+
+# Database Schema
+![DatabaseDesign](./images/db-schema.png)
+
+**showList TypeAttributes Schema**
+- date (string)
+- venue (string)
+- status (enum [Sold Out, Available, Coming Soon])
+- url (string)
+
+**musicLinks TypeAttributes Schema**
+- title (string)
+- icon (string) TODO: this should be a link to S3 bucket
+- url (string)
+- featured (boolean)
