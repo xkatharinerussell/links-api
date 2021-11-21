@@ -56,8 +56,10 @@ The following depencendies must be installed on your local machine for the proje
 ``` npm run start ```
 
 5. Hit the API endpoint at:\
-POST: http://localhost:8081/user/{userId}/link
-GET: http://localhost:8081/user/{userId}/links
+POST: http://localhost:8081/user/{userId}/link \
+GET: http://localhost:8081/user/{userId}/links \
+
+**NOTE: See example requests in postman collection inside spec folder**
 
 # Running unit tests
 Unit tests will run and automatically produce a coverage report.\

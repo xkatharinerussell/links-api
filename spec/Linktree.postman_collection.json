@@ -1,0 +1,130 @@
+{
+	"info": {
+		"_postman_id": "9bbb2e44-0b77-4f4d-8362-62e95bd4b933",
+		"name": "Linktree",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Classic Link",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"links\": {\n    \"type\": \"classic\",\n    \"attributes\": {\n      \"title\": \"New Link\",\n      \"url\": \"https://banana.com\"\n    }\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/user/1234/link",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"user",
+						"1234",
+						"link"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Show List Link",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"links\": {\n    \"type\": \"shows\",\n    \"attributes\": {\n        \"title\": \"Shows\",\n        \"showList\": [\n        {\n            \"date\": \"19 December 2021\",\n            \"venue\": \"Agganis Arena\",\n            \"status\": \"Sold Out\",\n            \"url\": \"https://getTickets.com\"\n        },\n        {\n            \"date\": \"25 December 2021\",\n            \"venue\": \"Metro Arena\",\n            \"status\": \"Available\",\n            \"url\": \"https://getTickets.com\"\n        }\n        ]\n    }\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/user/1234/link",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"user",
+						"1234",
+						"link"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Music Player",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"links\": {\n    \"type\": \"music\",\n    \"attributes\": {\n        \"title\": \"Music\",\n        \"musicLinks\": [\n        {\n            \"title\": \"Spotify\",\n            \"icon\": \"spotify.png\",\n            \"url\": \"https://spotify.com/song/embedPlayer\",\n            \"featured\": true\n        },\n        {\n            \"title\": \"Apple Music\",\n            \"icon\": \"apple.png\",\n            \"url\": \"https://apple.com/song\",\n            \"featured\": false\n        }\n        ]\n    }\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/user/1234/link",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"user",
+						"1234",
+						"link"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Links",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/user/1234/links?sortBy=createdAt&orderBy=ASC",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"user",
+						"1234",
+						"links"
+					],
+					"query": [
+						{
+							"key": "sortBy",
+							"value": "createdAt"
+						},
+						{
+							"key": "orderBy",
+							"value": "ASC"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
